@@ -18,17 +18,16 @@ List of 4–6 intended pages (e.g., homepage, about, gallery, contact)
 3. Upload page
 4. Summary Page 
 5. Gallery
+6. Maps
 
 Optional: brief notes on design/interaction (e.g., dark mode toggle)
 Summary page will have a date select, and will return totals and other stats for each date within said period
 When clicking on a day in the calendar page, it will take user to upload page
+Maps page will have a google maps link with nearby gyms on one side, and the link to mountainproject.com on the other side.
 
-Wireframe - A sketch of the homepage layout.
 
-Can be hand-drawn, or created using tools like PowerPoint, Google Slides, Figma, Moqups, etc.
-Upload as an image or PDF.
-You are encouraged (but not required) to include rough layout ideas for other key pages as well, especially if they include major features or complex structures.
-Submission (by 4/12)
+
+
 
 Create a public GitHub repository for your 3 project
 Create a folder pm-docs/ and save the PRD as PRD.md and wireframe as wireframe.png or wireframe.pdf
