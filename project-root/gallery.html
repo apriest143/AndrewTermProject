@@ -3,75 +3,166 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="This is an index webpage about Sophia Pak.">
+    <meta
+      name="description"
+      content="This is an index webpage about Sophia Pak."
+    />
     <title>AP Climbing- Gallery</title>
     <link rel="stylesheet" href="assets/uploadpage.css" />
     <style>
-        *{
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        .title{
-            color: #679436;
-            text-align: center;
-            padding: 20px;
-            background-color:#064789;
-        }
-        header {
-            background-color: #679436;
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 1rem;
-        }
-        nav {
+      * {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .title {
+        color: #679436;
+        text-align: center;
+        padding: 20px;
+        background-color: #064789;
+      }
+      header {
+        background-color: #679436;
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .header-content {
         display: flex;
-        align-items: center;}
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+      }
       nav ul {
         display: flex;
         list-style: none;
         justify-content: flex-end;
-        }
-    nav ul li {
+      }
+      nav ul li {
         margin: 0 0 0 1.5rem;
-        } 
-        nav ul li a {
-            text-decoration: none;
-            color: #ebf2fa;
-            font-weight: 500;
-        }
-        nav ul li a:hover {
-            color:#427aa1;
-        }
+      }
+      nav ul li a {
+        text-decoration: none;
+        color: #ebf2fa;
+        font-weight: 500;
+      }
+      nav ul li a:hover {
+        color: #427aa1;
+      }
+      .gallery-container {
+        max-width: 1200px;
+        margin: 30px auto;
+        text-align: center;
+      }
+      .gallery-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: center;
+      }
+      .gallery-grid img {
+        width: 500px;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 0 8px #064789;
+      }
+      .empty {
+        color: #679436;
+        margin: 40px 0;
+      }
+      button {
+        background-color: #427aa1; 
+        color: #a5be00; 
+        border: none; 
+        border-radius: 8px;
+        padding: 12px 20px; 
+        font-size: 16px; 
+        font-weight: bold; 
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      button:hover {
+        background-color: #064789; 
+      }
+      h2 {
+        color: #427aa1;
+      }
     </style>
   </head>
   <div class="title"><h1>Photo Gallery</h1></div>
   <header>
     <div class="container-head">
-        <div class="header-content">
-            <div class="logo-container">
-                <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="100%" height="100%" fill="#064789" />
-                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
-                          font-family="Arial, sans-serif" font-size="30" fill="#679436">
-                      AP
-                    </text>
-                  </svg>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="maps.html">Maps</a></li>
-                    <li><a href="summarypage.html">Summary</a></li>
-                    <li><a href="Homepage.html">Home</a></li>
-                </ul>
-            </nav>
+      <div class="header-content">
+        <div class="logo-container">
+          <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100%" height="100%" fill="#064789" />
+            <text
+              x="50%"
+              y="50%"
+              dominant-baseline="middle"
+              text-anchor="middle"
+              font-family="Arial, sans-serif"
+              font-size="30"
+              fill="#679436"
+            >
+              AP
+            </text>
+          </svg>
         </div>
+        <nav>
+          <ul>
+            <li><a href="maps.html">Maps</a></li>
+            <li><a href="summarypage.html">Summary</a></li>
+            <li><a href="Homepage.html">Home</a></li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </header>
+  <body>
+    <h2 style="text-align: center">Image Gallery</h2>
+    <div class="gallery-container">
+      <div id="galleryGrid" class="gallery-grid"></div>
+      <div id="emptyMsg" class="empty"></div>
+      <button onclick="window.location.href='Homepage.html'">
+        Back to Upload
+      </button>
+      <button id="clearGallery" style="float: right">Clear Gallery</button>
+    </div>
+    <script>
+      const galleryGrid = document.getElementById("galleryGrid");
+      const emptyMsg = document.getElementById("emptyMsg");
+      const clearGallery = document.getElementById("clearGallery");
+
+      function loadGallery() {
+        const images = JSON.parse(
+          localStorage.getItem("galleryImages") || "[]"
+        );
+        galleryGrid.innerHTML = "";
+        if (images.length === 0) {
+          emptyMsg.textContent = "No images uploaded yet.";
+        } else {
+          emptyMsg.textContent = "";
+          images.forEach((src) => {
+            const img = document.createElement("img");
+            img.src = src;
+            galleryGrid.appendChild(img);
+          });
+        }
+      }
+
+      clearGallery.onclick = function () {
+        if (confirm("Are you sure you want to clear the gallery?")) {
+          localStorage.removeItem("galleryImages");
+          loadGallery();
+        }
+      };
+
+      loadGallery();
+    </script>
   </body>
 </html>
