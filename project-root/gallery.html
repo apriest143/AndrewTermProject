@@ -75,28 +75,28 @@
         margin: 40px 0;
       }
       button {
-        background-color: #427aa1; 
-        color: #a5be00; 
-        border: none; 
+        background-color: #427aa1;
+        color: #a5be00;
+        border: none;
         border-radius: 8px;
-        padding: 12px 20px; 
-        font-size: 16px; 
-        font-weight: bold; 
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: bold;
       }
 
       button:hover {
-        background-color: #064789; 
+        background-color: #064789;
       }
-      body{
+      body {
         background-color: #ebf2fa;
       }
       .button-group {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 16px; 
+        gap: 16px;
         margin-top: 16px;
-        flex-wrap: wrap; 
+        flex-wrap: wrap;
       }
     </style>
   </head>
@@ -135,11 +135,11 @@
       <div id="galleryGrid" class="gallery-grid"></div>
       <div id="emptyMsg" class="empty"></div>
       <div class="button-group">
-      <button onclick="window.location.href='Homepage.html'">
-        Back to Upload
-      </button>
-      <button id="clearGallery" style="float: right">Clear Gallery</button>
-    </div>
+        <button onclick="window.location.href='Homepage.html'">
+          Back to Upload
+        </button>
+        <button id="clearGallery" style="float: right">Clear Gallery</button>
+      </div>
     </div>
     <script>
       const galleryGrid = document.getElementById("galleryGrid");
@@ -151,14 +151,40 @@
           localStorage.getItem("galleryImages") || "[]"
         );
         galleryGrid.innerHTML = "";
+
         if (images.length === 0) {
           emptyMsg.textContent = "No images uploaded yet.";
         } else {
           emptyMsg.textContent = "";
-          images.forEach((src) => {
+
+          images.forEach((item) => {
+            const card = document.createElement("div");
+            card.style.display = "flex";
+            card.style.flexDirection = "column";
+            card.style.alignItems = "center";
+            card.style.width = "500px";
+
             const img = document.createElement("img");
-            img.src = src;
-            galleryGrid.appendChild(img);
+            img.src = typeof item === "string" ? item : item.src;
+            img.alt = "Climb Photo";
+
+            const desc = document.createElement("p");
+            desc.style.marginTop = "10px";
+            desc.style.color = "#427aa1";
+            desc.style.fontSize = "15px";
+            desc.style.maxWidth = "480px";
+            desc.style.wordWrap = "break-word";
+            desc.style.padding = "0 10px";
+
+            if (typeof item === "object" && item.description) {
+              desc.textContent = item.description;
+            } else {
+              desc.textContent = "(No description provided)";
+            }
+
+            card.appendChild(img);
+            card.appendChild(desc);
+            galleryGrid.appendChild(card);
           });
         }
       }

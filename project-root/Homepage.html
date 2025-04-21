@@ -100,7 +100,8 @@
       h3 {
         color: #679436;
       }
-      select, button {
+      select,
+      button {
         background-color: #427aa1;
         color: #a5be00;
         border: none;
@@ -108,78 +109,78 @@
         padding: 12px 20px;
         font-size: 16px;
         font-weight: bold;
-    }
-    .calendar {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 10px;
-      max-width: 800px;
-      margin: 20px auto;
-    }
-    .day {
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 10px;
-      min-height: 100px;
-      position: relative;
-      background-color: #ebf2fa;
-      transition: background-color 0.3s ease;
-    }
-    .day:hover {
-      background-color: #d2e2f1;
-    }
-    .day-number {
-      font-weight: bold;
-    }
-    .note {
-      font-size: 0.9em;
-      margin-top: 6px;
-      color: #679436;
-    }
-    .delete-btn {
-      background: #ff4d4d;
-      color: white;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-top: 6px;
-    }
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 300px;
-      text-align: left;
-    }
-    .modal-content textarea {
-      width: 100%;
-      margin-top: 10px;
-      padding: 8px;
-    }
-    .modal-content button {
-      margin-top: 10px;
-      background-color: #427aa1;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-    #selectmonth{
-        color:#427aa1;
-    }
+      }
+      .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        max-width: 800px;
+        margin: 20px auto;
+      }
+      .day {
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 10px;
+        min-height: 100px;
+        position: relative;
+        background-color: #ebf2fa;
+        transition: background-color 0.3s ease;
+      }
+      .day:hover {
+        background-color: #d2e2f1;
+      }
+      .day-number {
+        font-weight: bold;
+      }
+      .note {
+        font-size: 0.9em;
+        margin-top: 6px;
+        color: #679436;
+      }
+      .delete-btn {
+        background: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 6px;
+      }
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        display: none;
+        justify-content: center;
+        align-items: center;
+      }
+      .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 300px;
+        text-align: left;
+      }
+      .modal-content textarea {
+        width: 100%;
+        margin-top: 10px;
+        padding: 8px;
+      }
+      .modal-content button {
+        margin-top: 10px;
+        background-color: #427aa1;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+      #selectmonth {
+        color: #427aa1;
+      }
     </style>
   </head>
   <div class="title"><h1>The Comprehensive Climbing Journal</h1></div>
@@ -232,6 +233,17 @@
       multiple
       style="display: none"
     />
+    <div id="descModal" class="modal">
+      <div class="modal-content">
+        <h3>Add Description for Your Climb</h3>
+        <textarea
+          id="imageDescription"
+          rows="4"
+          placeholder="Write a brief description..."
+        ></textarea>
+        <button id="saveDescriptionBtn">Save & Continue</button>
+      </div>
+    </div>
     <h2>Climbing Calender</h2>
     <label for="monthSelect" id="selectmonth">Select Month:</label>
     <select id="monthSelect"></select>
@@ -258,33 +270,57 @@
       const fileInput = document.getElementById("fileInput");
       const goToGallery = document.getElementById("goToGallery");
 
+      const descModal = document.getElementById("descModal");
+      const imageDescriptionInput = document.getElementById("imageDescription");
+      const saveDescriptionBtn = document.getElementById("saveDescriptionBtn");
+
+      let imageQueue = []; // to hold selected image files
+      let imageDataArray = JSON.parse(
+        localStorage.getItem("galleryImages") || "[]"
+      );
+
       fileInput.addEventListener("change", () => {
-        const files = Array.from(fileInput.files);
+        const files = Array.from(fileInput.files).filter((file) =>
+          file.type.startsWith("image/")
+        );
         if (!files.length) return;
 
-        let imageDataArray = JSON.parse(
-          localStorage.getItem("galleryImages") || "[]"
-        );
-        let filesRead = 0;
+        imageQueue = files;
+        fileInput.value = ""; // reset input
+        promptNextDescription();
+      });
 
-        files.forEach((file) => {
-          if (!file.type.startsWith("image/")) return;
+      function promptNextDescription() {
+        if (imageQueue.length === 0) {
+          localStorage.setItem("galleryImages", JSON.stringify(imageDataArray));
+          alert("All images uploaded!");
+          return;
+        }
 
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            imageDataArray.push(e.target.result);
-            filesRead++;
-            if (filesRead === files.length) {
-              localStorage.setItem(
-                "galleryImages",
-                JSON.stringify(imageDataArray)
-              );
-              fileInput.value = "";
-              alert("Images uploaded! You can view them in the gallery.");
-            }
+        const file = imageQueue.shift();
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const imageSrc = e.target.result;
+          imageDescriptionInput.value = ""; // reset textarea
+          descModal.style.display = "flex";
+
+          saveDescriptionBtn.onclick = () => {
+            const description = imageDescriptionInput.value.trim();
+            imageDataArray.push({
+              src: imageSrc,
+              description: description,
+            });
+            descModal.style.display = "none";
+            promptNextDescription();
           };
-          reader.readAsDataURL(file);
-        });
+        };
+        reader.readAsDataURL(file);
+      }
+
+      descModal.addEventListener("click", function (e) {
+        if (e.target === descModal) {
+          descModal.style.display = "none";
+        }
       });
 
       goToGallery.onclick = () => {
@@ -304,7 +340,7 @@
       let currentMonthKey = "";
       const storedNotes =
         JSON.parse(localStorage.getItem("climbSchedule")) || {};
-        
+
       function populateMonthSelector() {
         const now = new Date();
         for (let i = 0; i < 12; i++) {
