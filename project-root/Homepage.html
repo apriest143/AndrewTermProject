@@ -3,75 +3,193 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="This is an index webpage about Sophia Pak.">
+    <meta
+      name="description"
+      content="This is an index webpage about Sophia Pak."
+    />
     <title>AP Climbing-Homepage</title>
     <link rel="stylesheet" href="assets/homepage.css" />
     <style>
-        *{
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        .title{
-            color: #a5be00;
-            text-align: center;
-            padding: 20px;
-            background-color:#ebf2fa;
-        }
-        header {
-            background-color: #427aa1;
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 1rem;
-        }
-        nav {
+      * {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .title {
+        color: #a5be00;
+        text-align: center;
+        padding: 20px;
+        background-color: #ebf2fa;
+      }
+      header {
+        background-color: #427aa1;
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .header-content {
         display: flex;
-        align-items: center;}
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+      }
       nav ul {
         display: flex;
         list-style: none;
         justify-content: flex-end;
-        }
-    nav ul li {
+      }
+      nav ul li {
         margin: 0 0 0 1.5rem;
-        } 
-        nav ul li a {
-            text-decoration: none;
-            color: #ebf2fa;
-            font-weight: 500;
-        }
-        nav ul li a:hover {
-            color:#679436;
-        }
+      }
+      nav ul li a {
+        text-decoration: none;
+        color: #ebf2fa;
+        font-weight: 500;
+      }
+      nav ul li a:hover {
+        color: #679436;
+      }
+      button {
+        background-color: #427aa1;
+        color: #a5be00;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      button:hover {
+        background-color: #064789;
+      }
+      h2 {
+        color: #064789;
+        text-align: center;
+      }
+      .custom-file-upload {
+        display: inline-block;
+        background-color: #427aa1;
+        color: #a5be00;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .custom-file-upload:hover {
+        background-color: #064789;
+      }
+      .button-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px; /* spacing between buttons */
+        margin-top: 16px;
+        flex-wrap: wrap; /* optional, allows buttons to wrap on small screens */
+      }
+      body{
+        background-color: #ebf2fa;
+      }
+      h3{
+        color:#679436;
+      }
+      
     </style>
   </head>
   <div class="title"><h1>The Comprehensive Climbing Journal</h1></div>
   <header>
     <div class="container-head">
-        <div class="header-content">
-            <div class="logo-container">
-                <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="100%" height="100%" fill="#064789" />
-                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
-                          font-family="Arial, sans-serif" font-size="30" fill="#679436">
-                      AP
-                    </text>
-                  </svg>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="gallery.html">Gallery</a></li>
-                    <li><a href="maps.html">Maps</a></li>
-                    <li><a href="summarypage.html">Summary</a></li>
-                </ul>
-            </nav>
+      <div class="header-content">
+        <div class="logo-container">
+          <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100%" height="100%" fill="#064789" />
+            <text
+              x="50%"
+              y="50%"
+              dominant-baseline="middle"
+              text-anchor="middle"
+              font-family="Arial, sans-serif"
+              font-size="30"
+              fill="#679436"
+            >
+              AP
+            </text>
+          </svg>
         </div>
+        <nav>
+          <ul>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="maps.html">Maps</a></li>
+            <li><a href="summarypage.html">Summary</a></li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </header>
+  <body>
+    <h3>
+      Track your climbing progress with ease! Upload photos of your recent
+      climbs—whether completed or attempted—and add brief notes to document your
+      journey. View your personal climbing gallery and stay motivated by
+      checking your weekly and monthly climbing stats all in one place.
+    </h3>
+    <h2>Image Upload</h2>
+    <div class="button-group">
+      <label for="fileInput" class="custom-file-upload">Choose Files</label>
+      <button id="goToGallery">Go to Gallery</button>
+    </div>
+    <input
+      type="file"
+      id="fileInput"
+      class="file-input"
+      accept="image/*"
+      multiple
+      style="display: none"
+    />
+    <script>
+      const fileInput = document.getElementById("fileInput");
+      const goToGallery = document.getElementById("goToGallery");
+
+      fileInput.addEventListener("change", () => {
+        const files = Array.from(fileInput.files);
+        if (!files.length) return;
+
+        let imageDataArray = JSON.parse(
+          localStorage.getItem("galleryImages") || "[]"
+        );
+        let filesRead = 0;
+
+        files.forEach((file) => {
+          if (!file.type.startsWith("image/")) return;
+
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            imageDataArray.push(e.target.result);
+            filesRead++;
+            if (filesRead === files.length) {
+              localStorage.setItem(
+                "galleryImages",
+                JSON.stringify(imageDataArray)
+              );
+              fileInput.value = "";
+              alert("Images uploaded! You can view them in the gallery.");
+            }
+          };
+          reader.readAsDataURL(file);
+        });
+      });
+
+      goToGallery.onclick = () => {
+        window.location.href = "gallery.html";
+      };
+    </script>
   </body>
 </html>
