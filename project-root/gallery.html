@@ -82,14 +82,21 @@
         padding: 12px 20px; 
         font-size: 16px; 
         font-weight: bold; 
-        transition: background-color 0.3s ease, transform 0.2s ease;
       }
 
       button:hover {
         background-color: #064789; 
       }
-      h2 {
-        color: #427aa1;
+      body{
+        background-color: #ebf2fa;
+      }
+      .button-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px; 
+        margin-top: 16px;
+        flex-wrap: wrap; 
       }
     </style>
   </head>
@@ -124,14 +131,15 @@
     </div>
   </header>
   <body>
-    <h2 style="text-align: center">Image Gallery</h2>
     <div class="gallery-container">
       <div id="galleryGrid" class="gallery-grid"></div>
       <div id="emptyMsg" class="empty"></div>
+      <div class="button-group">
       <button onclick="window.location.href='Homepage.html'">
         Back to Upload
       </button>
       <button id="clearGallery" style="float: right">Clear Gallery</button>
+    </div>
     </div>
     <script>
       const galleryGrid = document.getElementById("galleryGrid");

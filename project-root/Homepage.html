@@ -60,7 +60,6 @@
         padding: 12px 20px;
         font-size: 16px;
         font-weight: bold;
-        transition: background-color 0.3s ease, transform 0.2s ease;
       }
 
       button:hover {
@@ -91,17 +90,96 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 16px; /* spacing between buttons */
+        gap: 16px;
         margin-top: 16px;
-        flex-wrap: wrap; /* optional, allows buttons to wrap on small screens */
+        flex-wrap: wrap;
       }
-      body{
+      body {
         background-color: #ebf2fa;
       }
-      h3{
-        color:#679436;
+      h3 {
+        color: #679436;
       }
-      
+      select, button {
+        background-color: #427aa1;
+        color: #a5be00;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      max-width: 800px;
+      margin: 20px auto;
+    }
+    .day {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 10px;
+      min-height: 100px;
+      position: relative;
+      background-color: #ebf2fa;
+      transition: background-color 0.3s ease;
+    }
+    .day:hover {
+      background-color: #d2e2f1;
+    }
+    .day-number {
+      font-weight: bold;
+    }
+    .note {
+      font-size: 0.9em;
+      margin-top: 6px;
+      color: #679436;
+    }
+    .delete-btn {
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      text-align: left;
+    }
+    .modal-content textarea {
+      width: 100%;
+      margin-top: 10px;
+      padding: 8px;
+    }
+    .modal-content button {
+      margin-top: 10px;
+      background-color: #427aa1;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    #selectmonth{
+        color:#427aa1;
+    }
     </style>
   </head>
   <div class="title"><h1>The Comprehensive Climbing Journal</h1></div>
@@ -154,7 +232,29 @@
       multiple
       style="display: none"
     />
+    <h2>Climbing Calender</h2>
+    <label for="monthSelect" id="selectmonth">Select Month:</label>
+    <select id="monthSelect"></select>
+
+    <button id="resetMonthBtn">Reset This Month</button>
+
+    <!-- Calendar -->
+    <div id="calendar" class="calendar"></div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <h3 id="modal-date-title">Add Climb</h3>
+        <textarea
+          id="climbNote"
+          rows="4"
+          placeholder="Enter climb or goal..."
+        ></textarea>
+        <button id="saveNote">Save</button>
+      </div>
+    </div>
     <script>
+      //upload pictures
       const fileInput = document.getElementById("fileInput");
       const goToGallery = document.getElementById("goToGallery");
 
@@ -190,6 +290,123 @@
       goToGallery.onclick = () => {
         window.location.href = "gallery.html";
       };
+      //end of upload pictures javascript
+      //calender script
+      const calendar = document.getElementById("calendar");
+      const modal = document.getElementById("modal");
+      const climbNoteInput = document.getElementById("climbNote");
+      const saveNoteButton = document.getElementById("saveNote");
+      const modalDateTitle = document.getElementById("modal-date-title");
+      const monthSelect = document.getElementById("monthSelect");
+      const resetMonthBtn = document.getElementById("resetMonthBtn");
+
+      let selectedDate = null;
+      let currentMonthKey = "";
+      const storedNotes =
+        JSON.parse(localStorage.getItem("climbSchedule")) || {};
+        
+      function populateMonthSelector() {
+        const now = new Date();
+        for (let i = 0; i < 12; i++) {
+          const date = new Date(now.getFullYear(), i, 1);
+          const option = document.createElement("option");
+          option.value = `${date.getFullYear()}-${i + 1}`;
+          option.textContent = date.toLocaleString("default", {
+            month: "long",
+            year: "numeric",
+          });
+          if (i === now.getMonth()) option.selected = true;
+          monthSelect.appendChild(option);
+        }
+      }
+
+      function renderCalendar() {
+        calendar.innerHTML = "";
+        const [year, month] = monthSelect.value.split("-").map(Number);
+        const daysInMonth = new Date(year, month, 0).getDate();
+        currentMonthKey = `${year}-${month}`;
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dateKey = `${currentMonthKey}-${day}`;
+          const dayDiv = document.createElement("div");
+          dayDiv.classList.add("day");
+          dayDiv.dataset.date = dateKey;
+
+          const dayNumber = document.createElement("div");
+          dayNumber.classList.add("day-number");
+          dayNumber.textContent = day;
+
+          const noteText = storedNotes[dateKey];
+          const note = document.createElement("div");
+          note.classList.add("note");
+          if (noteText) {
+            note.textContent = noteText;
+            const deleteBtn = document.createElement("button");
+            deleteBtn.classList.add("delete-btn");
+            deleteBtn.textContent = "Delete";
+            deleteBtn.onclick = () => {
+              delete storedNotes[dateKey];
+              localStorage.setItem(
+                "climbSchedule",
+                JSON.stringify(storedNotes)
+              );
+              renderCalendar();
+            };
+            dayDiv.appendChild(deleteBtn);
+          }
+
+          dayDiv.appendChild(dayNumber);
+          dayDiv.appendChild(note);
+          calendar.appendChild(dayDiv);
+        }
+      }
+
+      calendar.addEventListener("click", function (e) {
+        const dayBox = e.target.closest(".day");
+        if (!dayBox || e.target.classList.contains("delete-btn")) return;
+
+        selectedDate = dayBox.dataset.date;
+        climbNoteInput.value = storedNotes[selectedDate] || "";
+        modalDateTitle.textContent = `Add Climb for ${selectedDate}`;
+        modal.style.display = "flex";
+      });
+
+      saveNoteButton.addEventListener("click", function () {
+        const note = climbNoteInput.value.trim();
+        if (note) {
+          storedNotes[selectedDate] = note;
+        } else {
+          delete storedNotes[selectedDate];
+        }
+        localStorage.setItem("climbSchedule", JSON.stringify(storedNotes));
+        modal.style.display = "none";
+        renderCalendar();
+      });
+
+      modal.addEventListener("click", function (e) {
+        if (e.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+
+      monthSelect.addEventListener("change", renderCalendar);
+
+      resetMonthBtn.addEventListener("click", function () {
+        if (
+          confirm("Are you sure you want to clear all climbs for this month?")
+        ) {
+          const keysToRemove = Object.keys(storedNotes).filter((key) =>
+            key.startsWith(currentMonthKey)
+          );
+          keysToRemove.forEach((key) => delete storedNotes[key]);
+          localStorage.setItem("climbSchedule", JSON.stringify(storedNotes));
+          renderCalendar();
+        }
+      });
+
+      populateMonthSelector();
+      renderCalendar();
+      //end calendar script
     </script>
   </body>
 </html>
