@@ -2,13 +2,13 @@
     font-family: Arial, Helvetica, sans-serif;
   }
   .title {
-    color: #a5be00;
+    color: #679436;
     text-align: center;
     padding: 20px;
-    background-color: #ebf2fa;
+    background-color: #064789;
   }
   header {
-    background-color: #427aa1;
+    background-color: #679436;
     padding: 1rem 0;
     position: sticky;
     top: 0;
@@ -38,7 +38,29 @@
     font-weight: 500;
   }
   nav ul li a:hover {
+    color: #427aa1;
+  }
+  .gallery-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    text-align: center;
+  }
+  .gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+  .gallery-grid img {
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 0 8px #064789;
+  }
+  .empty {
     color: #679436;
+    margin: 40px 0;
   }
   button {
     background-color: #427aa1;
@@ -53,39 +75,14 @@
   button:hover {
     background-color: #064789;
   }
-  h2 {
-    color: #064789;
-    text-align: center;
-  }
-  .custom-file-upload {
-    display: inline-block;
-    background-color: #427aa1;
-    color: #a5be00;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-
-  .custom-file-upload:hover {
-    background-color: #064789;
+  body {
+    background-color: #ebf2fa;
   }
   .button-group {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 16px; 
+    gap: 16px;
     margin-top: 16px;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
   }
-  body{
-    background-color: #ebf2fa;
-  }
-  h3{
-    color:#679436;
-  }
-  
