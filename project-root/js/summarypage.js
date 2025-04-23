@@ -3,9 +3,7 @@ const display = document.getElementById("summaryDisplay");
 
 // Load summaries from localStorage and render them
 function loadSummaries() {
-  const saved = JSON.parse(
-    localStorage.getItem("climbSummaries") || "[]"
-  );
+  const saved = JSON.parse(localStorage.getItem("climbSummaries") || "[]");
   saved.forEach((entry, index) => renderSummary(entry, index));
 }
 
@@ -24,14 +22,17 @@ function renderSummary(summary, index) {
   summaryEntry.style.marginBottom = "20px";
 
   summaryEntry.innerHTML = `
-<h3 style="color:#427aa1;">Climb Summary</h3>
-<p><strong>Climb Name:</strong> ${summary.climbName}</p>
-<p><strong>Date(s):</strong> ${summary.date}</p>
-<p><strong>Rating:</strong> ${summary.rating}</p>
-<p><strong>Total Attempts:</strong> ${summary.attempts}</p>
-<p><strong>Completed:</strong> ${summary.completed}</p>
-<p><strong>Description:</strong> ${summary.description}</p>
-`;
+    <h3 style="color:#427aa1;">Climb Summary</h3>
+    <p><strong>Climb Name:</strong> ${summary.climbName}</p>
+    <p><strong>Date(s):</strong> ${summary.date}</p>
+    <p><strong>Rating:</strong> ${summary.rating}</p>
+    <p><strong>Difficulty (VB Scale):</strong> ${
+      summary.difficulty || "Not specified"
+    }</p>
+    <p><strong>Total Attempts:</strong> ${summary.attempts}</p>
+    <p><strong>Completed:</strong> ${summary.completed}</p>
+    <p><strong>Description:</strong> ${summary.description}</p>
+  `;
 
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "Delete Summary";
@@ -62,6 +63,7 @@ function refreshDisplay() {
   loadSummaries();
 }
 
+// Handle form submission
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -69,6 +71,7 @@ form.addEventListener("submit", (e) => {
     climbName: document.getElementById("climbName").value,
     date: document.getElementById("date").value,
     rating: document.getElementById("rating").value,
+    difficulty: document.getElementById("difficulty-select").value,
     attempts: document.getElementById("attempts").value,
     completed:
       document.querySelector('input[name="completed"]:checked')?.value ||
@@ -76,9 +79,7 @@ form.addEventListener("submit", (e) => {
     description: document.getElementById("description").value,
   };
 
-  const summaries = JSON.parse(
-    localStorage.getItem("climbSummaries") || "[]"
-  );
+  const summaries = JSON.parse(localStorage.getItem("climbSummaries") || "[]");
   summaries.push(newSummary);
   saveSummaries(summaries);
 
