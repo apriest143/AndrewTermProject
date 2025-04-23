@@ -3,9 +3,7 @@ const emptyMsg = document.getElementById("emptyMsg");
 const clearGallery = document.getElementById("clearGallery");
 
 function loadGallery() {
-  const images = JSON.parse(
-    localStorage.getItem("galleryImages") || "[]"
-  );
+  const images = JSON.parse(localStorage.getItem("galleryImages") || "[]");
   galleryGrid.innerHTML = "";
 
   if (images.length === 0) {
@@ -32,8 +30,13 @@ function loadGallery() {
       desc.style.wordWrap = "break-word";
       desc.style.padding = "0 10px";
 
-      if (typeof item === "object" && item.description) {
-        desc.textContent = item.description;
+      // Build description and date
+      if (typeof item === "object") {
+        const descriptionText = item.description
+          ? item.description
+          : "(No description provided)";
+        const dateText = item.date ? `Date: ${item.date}` : "Date: N/A";
+        desc.innerHTML = `${descriptionText}<br><em style="color: gray; font-size: 13px">${dateText}</em>`;
       } else {
         desc.textContent = "(No description provided)";
       }

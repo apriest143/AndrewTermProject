@@ -3,96 +3,87 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="This is an index webpage about Sophia Pak."
-    />
-    <title>AP Climbing-Homepage</title>
+    <meta name="description" content="This is an index webpage about Sophia Pak." />
+    <title>AP Climbing - Homepage</title>
     <link rel="stylesheet" href="css/homepage.css" />
   </head>
-  <div class="title"><h1>The Comprehensive Climbing Journal</h1></div>
-  <header>
-    <div class="container-head">
-      <div class="header-content">
-        <div class="logo-container">
-          <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
-            <rect width="100%" height="100%" fill="#064789" />
-            <text
-              x="50%"
-              y="50%"
-              dominant-baseline="middle"
-              text-anchor="middle"
-              font-family="Arial, sans-serif"
-              font-size="30"
-              fill="#679436"
-            >
-              AP
-            </text>
-          </svg>
-        </div>
-        <nav>
-          <ul>
-            <li><a href="gallery.html">Gallery</a></li>
-            <li><a href="maps.html">Maps</a></li>
-            <li><a href="summarypage.html">Summary</a></li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </header>
   <body>
+    <div class="title"><h1>The Comprehensive Climbing Journal</h1></div>
+    <header>
+      <div class="container-head">
+        <div class="header-content">
+          <div class="logo-container">
+            <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg">
+              <rect width="100%" height="100%" fill="#064789" />
+              <text
+                x="50%"
+                y="50%"
+                dominant-baseline="middle"
+                text-anchor="middle"
+                font-family="Arial, sans-serif"
+                font-size="30"
+                fill="#679436"
+              >
+                AP
+              </text>
+            </svg>
+          </div>
+          <nav>
+            <ul>
+              <li><a href="gallery.html">Gallery</a></li>
+              <li><a href="maps.html">Maps</a></li>
+              <li><a href="summarypage.html">Summary</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
     <h3>
       Track your climbing progress with ease! Upload photos of your recent
       climbs—whether completed or attempted—and add brief notes to document your
       journey. View your personal climbing gallery and stay motivated by
       checking your weekly and monthly climbing stats all in one place.
     </h3>
+
     <h2>Image Upload</h2>
     <div class="button-group">
       <label for="fileInput" class="custom-file-upload">Choose Files</label>
       <button id="goToGallery">Go to Gallery</button>
     </div>
-    <input
-      type="file"
-      id="fileInput"
-      class="file-input"
-      accept="image/*"
-      multiple
-      style="display: none"
-    />
+    <input type="file" id="fileInput" class="file-input" accept="image/*" multiple style="display: none" />
+
+    <!-- Modal for Description and Date -->
     <div id="descModal" class="modal">
       <div class="modal-content">
         <h3>Add Description for Your Climb</h3>
-        <textarea
-          id="imageDescription"
-          rows="4"
-          placeholder="Write a brief description..."
-        ></textarea>
+        <label for="imageDate">Climb Date:</label>
+        <input type="date" id="imageDate" />
+        <textarea id="imageDescription" rows="4" placeholder="Write a brief description..."></textarea>
         <button id="saveDescriptionBtn">Save & Continue</button>
       </div>
     </div>
+
     <div id="spacer"></div>
-    <h2>Climbing Calender</h2>
+
+    <h2>Climbing Calendar</h2>
     <label for="monthSelect" id="selectmonth">Select Month:</label>
     <select id="monthSelect"></select>
-
     <button id="resetMonthBtn">Reset This Month</button>
 
     <!-- Calendar -->
     <div id="calendar" class="calendar"></div>
 
-    <!-- Modal -->
+    <!-- Calendar Modal -->
     <div id="modal" class="modal">
       <div class="modal-content">
         <h3 id="modal-date-title">Add Climb</h3>
-        <textarea
-          id="climbNote"
-          rows="4"
-          placeholder="Enter climb or goal..."
-        ></textarea>
+        <textarea id="climbNote" rows="4" placeholder="Enter climb or goal..."></textarea>
         <button id="saveNote">Save</button>
       </div>
     </div>
+
     <script src="js/homepage.js"></script>
   </body>
 </html>
+
