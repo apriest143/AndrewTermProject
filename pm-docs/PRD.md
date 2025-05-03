@@ -28,7 +28,6 @@ Maps page will have a google maps link with nearby gyms on one side, and the lin
 
 
 
-
 Create a public GitHub repository for your 3 project
 Create a folder pm-docs/ and save the PRD as PRD.md and wireframe as wireframe.png or wireframe.pdf
 Push to GitHub and submit your repo link on Canvas
